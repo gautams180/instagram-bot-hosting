@@ -3,6 +3,8 @@ import Tab from './Tab';
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import Papa from 'papaparse';
+const BASE_URL = process.env.REACT_APP_BASE_URL
+// const BASE_URL = import.meta.env.MODE === "development" ? "http://127.0.0.1:5000" : "/";
 
 const Login = () => {
 
@@ -17,7 +19,6 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
 
     const {username, password} = formData;
-
     
     const helloList = [];
 
@@ -61,6 +62,7 @@ const Login = () => {
         })
         console.log("List is here ",helloList);
         console.log("Form Data : ",formData);
+        console.log("BASE_URL: ",BASE_URL)
     }
 
     const handleOnSubmit = async (e) => {
@@ -68,7 +70,7 @@ const Login = () => {
 
             if(operationType === "Get") {
                 e.preventDefault();
-                const response =  await fetch(`http://localhost:5000/api`,{
+                const response =  await fetch(`${BASE_URL}/api`,{
                     method:"POST",
                     headers: {
                         'Content-Type': 'application/json'

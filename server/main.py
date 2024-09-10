@@ -1,14 +1,25 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from scraping_file import InstagramBot
 from flask_cors import CORS
 import json
+import os
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
-@app.route('/')
-def Home():
-    return "Hello from flask, api call recieved successfully from frontend"
+frontend_folder = os.path.join(os.getcwd(),"..")
+print(frontend_folder)
+build_folder = os.path.join(frontend_folder,"build")
+
+#Serve static files from the "build" folder under the "frontend" directory
+
+@app.route("/", defaults={"filename":""})
+@app.route("/<path:filename>")
+def index(filename):
+    if not filename:
+        filename = "index.html"
+    return send_from_directory(build_folder,filename)
 
 #To fetch followers
 @app.route('/login/<username>&&<password>')
