@@ -8,7 +8,7 @@ app = Flask(__name__)
 # CORS(app)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
-frontend_folder = os.path.join(os.getcwd(),"..")
+frontend_folder = os.path.join(os.getcwd(),"../")
 print(frontend_folder)
 build_folder = os.path.join(frontend_folder,"build")
 

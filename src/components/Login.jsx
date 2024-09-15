@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Tab from './Tab';
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
@@ -70,7 +70,7 @@ const Login = () => {
 
             if(operationType === "Get") {
                 e.preventDefault();
-                const response =  await fetch(`${BASE_URL}/api`,{
+                const response =  await fetch(`${BASE_URL}/api`,mode,{
                     method:"POST",
                     headers: {
                         'Content-Type': 'application/json'
@@ -79,7 +79,8 @@ const Login = () => {
                         username: formData.username,
                         password: formData.password,
                         list: helloList
-                    })
+                    },
+                )
                 })
                 
                 if (!response.ok) {
