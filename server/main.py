@@ -1,12 +1,15 @@
 from flask import Flask, request, jsonify, send_from_directory
 from scraping_file import InstagramBot
+from follower_file import FollowerBot
 from flask_cors import CORS
 import json
 import os
+import logging
 
 app = Flask(__name__)
-# CORS(app)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app)
+# CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 
 frontend_folder = os.path.join(os.getcwd(),"../")
 print(frontend_folder)
@@ -28,8 +31,28 @@ def Home2(username,password):
     result = bot.start_bot()
     return result
 
-@app.route('/api', methods=['POST'])
-def api_endpoint():
+@app.route('/api/follow', methods=['POST'])
+def api_follow():
+    data = request.get_json() 
+    
+    username = data.get('username')
+    password = data.get('password')
+    item_list = data.get('list')
+
+    if username is None or password is None or item_list is None:
+        return jsonify({'error': 'Missing data!'}), 400
+    else:
+        bot = FollowerBot(username, password, item_list)
+        bot.bot_start()
+        response = {
+            'message': 'Data received successfully!',
+            'username': username,
+            'list': item_list
+        }
+    return jsonify(response), 200
+
+@app.route('/api/fetch', methods=['POST'])
+def api_fetch():
     data = request.get_json() 
     
     username = data.get('username')
@@ -48,5 +71,25 @@ def api_endpoint():
         }
     return jsonify(response), 200
 
+# @app.route('/api/follow', methods=['POST'])
+# def api_endpoint():
+#     data = request.get_json() 
+    
+#     username = data.get('username')
+#     password = data.get('password')
+#     item_list = data.get('list')
+
+#     if username is None or password is None or item_list is None:
+#         return jsonify({'error': 'Missing data!'}), 400
+#     else:
+#         bot = FollowerBot(username, password, item_list)
+#         bot.start_bot()
+#         response = {
+#             'message': 'Data received successfully!',
+#             'username': username,
+#             'list': item_list
+#         }
+#     return jsonify(response), 200
+
 if __name__ == '__main__':
-    app.run(debug=True,host="0.0.0.0", port=8000)
+    app.run(debug=True, port=5000)

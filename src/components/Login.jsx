@@ -70,7 +70,7 @@ const Login = () => {
 
             if(operationType === "Get") {
                 e.preventDefault();
-                const response =  await fetch(`${BASE_URL}/api`,{
+                const response =  await fetch(`${BASE_URL}/api/follow`,{
                     method:"POST",
                     headers: {
                         'Content-Type': 'application/json'
