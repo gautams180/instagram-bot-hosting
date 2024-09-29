@@ -12,6 +12,7 @@ class FollowerBot:
         self.username = username
         self.password = password
         self.account_list = account_list
+        print(account_list)
 
     def bot_login(self):
         self.cursor.wait_for_selector('//*[@id="loginForm"]/div/div[1]/div/label/input', timeout=50000)
@@ -20,20 +21,13 @@ class FollowerBot:
         self.cursor.query_selector('//*[@id="loginForm"]/div/div[2]/div/label/input').press("Enter")
 
         try:
-            self.cursor.wait_for_selector('//*[@id="loginForm"]/span/div', timeout=5000)
+            self.cursor.wait_for_selector('//*[@id="loginForm"]/span/div', timeout=50000)
             return False
         except:
-            # return True
-            try:
-                self.cursor.wait_for_selector('//div[@class="_a9-v"]', timeout=2000)
-                self.cursor.click('//div[@class="_a9-v"]/div[last()]/*[contains(text(), "Not Now")]')
-                self.cursor.wait_for_selector('//main[@class="x78zum5 xdt5ytf x1iyjqo2 x182iqb8 xvbhtw8"]')
-                return True
-            except:
-                return True
+            return True
 
     def post_follow(self, name):
-        time.sleep(random.randint(100, 140))
+        time.sleep(random.randint(2, 4))
         self.cursor.goto(f'https://www.instagram.com/{name}')
         self.cursor.wait_for_selector('//main/div/header')
 
@@ -56,6 +50,7 @@ class FollowerBot:
             if login_status:
                 print("Logged In")
                 account_to_follow = self.account_list
+                print(account_to_follow)
 
                 
                 for x in account_to_follow:

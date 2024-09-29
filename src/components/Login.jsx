@@ -28,11 +28,11 @@ const Login = () => {
             tabName: "Get Followers",
             type: "Get"
         },
-        // {
-        //     id: 2,
-        //     tabName: "Follow People",
-        //     type: "Follow"
-        // }
+        {
+            id: 2,
+            tabName: "Follow People",
+            type: "Follow"
+        }
     ]
 
     const handleOnChange = (e) => {
@@ -61,7 +61,7 @@ const Login = () => {
             }
         })
         console.log("List is here ",helloList);
-        console.log("Form Data : ",formData);
+        // console.log("Form Data : ",formData);
         console.log("BASE_URL: ",BASE_URL)
     }
 
@@ -69,6 +69,27 @@ const Login = () => {
         try{
 
             if(operationType === "Get") {
+                e.preventDefault();
+                const response =  await fetch(`${BASE_URL}/api/fetch`,{
+                    method:"POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: formData.username,
+                        password: formData.password,
+                        list: helloList
+                    },
+                )
+                })
+                
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+                console.log("Response in fetching ",response);
+            }
+
+            if(operationType === "Follow") {
                 e.preventDefault();
                 const response =  await fetch(`${BASE_URL}/api/follow`,{
                     method:"POST",
@@ -86,7 +107,7 @@ const Login = () => {
                 if (!response.ok) {
                     throw new Error(`Response status: ${response.status}`);
                 }
-                console.log("Response in frontend ",response);
+                console.log("Response in following ",response);
             }
         }
         catch(error) {
